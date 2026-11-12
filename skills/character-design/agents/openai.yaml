@@ -1,0 +1,4 @@
+interface:
+  display_name: "角色设计与一致性"
+  short_description: "为短剧角色建立差异化身份、统一定妆板，并保持换装与多视图一致"
+  default_prompt: "使用 $character-design 梳理本项目角色，先拉开不同角色的身份特征，再按统一版式编写母版与换装提示词。"

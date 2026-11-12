@@ -1,0 +1,4 @@
+interface:
+  display_name: "角色素材标注"
+  short_description: "为短剧角色素材统一标注筛选标签，处理证据不足、类别边界及入库复核。"
+  default_prompt: "使用 $tag-character-assets，按当前项目标签标准为这批新角色素材生成带依据的标签，并列出待核项。"

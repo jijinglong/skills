@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI 视频导演与生成段设计"
+  short_description: "以一次AI生成为单位，默认智能时长，统筹摄影、动作和节奏"
+  default_prompt: "使用 $ai-video-directing 将当前剧本整理为默认智能时长的AI生成段，写清摄影、动作、节奏与首帧引用。"
