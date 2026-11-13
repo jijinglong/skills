@@ -1,0 +1,4 @@
+interface:
+  display_name: "产品展示卡片设计"
+  short_description: "精选素材并用代码组织产品展示卡片，设计清晰的构图、层次与响应式呈现。"
+  default_prompt: "使用 $designing-product-showcase-cards，为当前页面精选素材并实现产品展示卡片，检查桌面和手机效果。"
