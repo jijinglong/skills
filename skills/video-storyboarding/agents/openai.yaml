@@ -1,0 +1,4 @@
+interface:
+  display_name: "视频分镜设计"
+  short_description: "将创意或剧本整理为可读分镜、素材计划和视频提示词，按需审核与修订。"
+  default_prompt: "使用 $video-storyboarding，从当前材料继续设计分镜与生成段，给出制作说明和可复制的视频提示词。"
