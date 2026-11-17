@@ -1,6 +1,6 @@
 # Jijinglong Skills
 
-Jijinglong 自有技能的统一维护仓库。每个技能独立存放在 `skills/<name>/`，目录名与 `SKILL.md` 的 `name` 一致，不强制作者或品牌前缀。
+Jijinglong 自有技能及明确标注的第三方技能收录仓库。每个技能独立存放在 `skills/<name>/`，目录名与 `SKILL.md` 的 `name` 一致；自有技能不强制作者或品牌前缀，第三方技能保留原名和原文。
 
 | 技能                                                                                 | 用途                                                           |
 | ------------------------------------------------------------------------------------ | -------------------------------------------------------------- |
@@ -11,6 +11,16 @@ Jijinglong 自有技能的统一维护仓库。每个技能独立存放在 `skil
 | [designing-product-showcase-cards](skills/designing-product-showcase-cards/SKILL.md) | 精选素材并用代码设计产品展示卡片，校准构图、层次与响应式呈现。 |
 
 ## 安装与使用
+
+第三方收录：
+
+| 技能                                                     | 用途                                                      | 来源                                                            |
+| -------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------------- |
+| [FilmPromptDirector](skills/FilmPromptDirector/SKILL.md) | Seedance 2.0 创意构思、剧情与分镜、视频提示词及审核参考。 | 用户提供的 1.0.0 压缩包，见[来源记录](THIRD_PARTY_NOTICES.md)。 |
+
+```bash
+npx skills add jijinglong/skills --skill FilmPromptDirector
+```
 
 使用 skills CLI 选择要安装的技能：
 
