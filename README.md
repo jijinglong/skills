@@ -9,6 +9,7 @@ Jijinglong 自有技能、第三方原样收录与注明来源的维护版本仓
 | [seedance-2-5-prompt](skills/seedance-2-5-prompt/SKILL.md)                           | 编写和审查 Seedance 2.5 的提示词与生成方案。                   |
 | [tag-character-assets](skills/tag-character-assets/SKILL.md)                         | 按项目字典标注角色素材，并校验候选标签。                       |
 | [designing-product-showcase-cards](skills/designing-product-showcase-cards/SKILL.md) | 精选素材并用代码设计产品展示卡片，校准构图、层次与响应式呈现。 |
+| [scene-generation](skills/scene-generation/SKILL.md)                                 | 从短剧剧情设计场景原画，确认后用 Blender 校正四个视图。        |
 
 ## 安装与使用
 

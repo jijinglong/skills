@@ -1,0 +1,4 @@
+interface:
+  display_name: "短剧场景生成"
+  short_description: "根据剧情出场景原画，确认后用 Blender 校正四个视图"
+  default_prompt: "使用 $scene-generation 根据这段短剧剧情设计场景原画，先给我确认。"
