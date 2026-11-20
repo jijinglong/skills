@@ -10,6 +10,7 @@ Jijinglong 自有技能、第三方原样收录与注明来源的维护版本仓
 | [tag-character-assets](skills/tag-character-assets/SKILL.md)                         | 按项目字典标注角色素材，并校验候选标签。                       |
 | [designing-product-showcase-cards](skills/designing-product-showcase-cards/SKILL.md) | 精选素材并用代码设计产品展示卡片，校准构图、层次与响应式呈现。 |
 | [scene-generation](skills/scene-generation/SKILL.md)                                 | 从短剧剧情设计场景原画，确认后用 Blender 校正四个视图。        |
+| [short-drama-breakdown](skills/short-drama-breakdown/SKILL.md)                       | 测量短剧成片的节奏，拆解开场与集尾，并与自家成片对照。          |
 
 ## 安装与使用
 
@@ -36,6 +37,8 @@ npx skills add jijinglong/skills --skill ai-video-directing --skill seedance-2-5
 ```
 
 `seedance-2-5-prompt` 通过相对路径引用 `ai-video-directing` 的参考资料，使用时应同时安装这两个技能。其他外部技能按各自正文说明使用，不复制第三方技能到本仓库冒充自有技能。
+
+`short-drama-breakdown` 使用 FFmpeg 和 FFprobe 测量成片。需要把拆解结果纳入短剧创作项目时，按技能说明与 `short-drama-develop` 等技能配合使用。
 
 角色素材标注脚本的现有测试可在仓库根目录运行：
 
