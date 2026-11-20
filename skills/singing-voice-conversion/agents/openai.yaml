@@ -1,0 +1,4 @@
+interface:
+  display_name: "歌声换音色"
+  short_description: "保留原唱时序，转换歌声音色、回混伴奏并换入成片"
+  default_prompt: "使用 $singing-voice-conversion 给这段歌换音色，沿用原唱的歌词、旋律和演唱时序，按项目需要交付干声、混音或换声版 MV。"
