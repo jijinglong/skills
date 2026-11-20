@@ -1,0 +1,4 @@
+interface:
+  display_name: "短视频重拍"
+  short_description: "拆解参考视频，挑选造型素材，生成新场景及角色图，建立剧本并同步 Spark"
+  default_prompt: "使用 $short-video-remake，根据我提供的参考视频和已有素材建立重拍项目，并在需要时同步 Spark。"

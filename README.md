@@ -11,6 +11,7 @@ Jijinglong 自有技能、第三方原样收录与注明来源的维护版本仓
 | [designing-product-showcase-cards](skills/designing-product-showcase-cards/SKILL.md) | 精选素材并用代码设计产品展示卡片，校准构图、层次与响应式呈现。 |
 | [scene-generation](skills/scene-generation/SKILL.md)                                 | 从短剧剧情设计场景原画，确认后用 Blender 校正四个视图。        |
 | [short-drama-breakdown](skills/short-drama-breakdown/SKILL.md)                       | 测量短剧成片的节奏，拆解开场与集尾，并与自家成片对照。          |
+| [short-video-remake](skills/short-video-remake/SKILL.md)                             | 拆解参考短视频，挑选和生成素材，建立剧本与分镜并同步 Spark。    |
 
 ## 安装与使用
 
