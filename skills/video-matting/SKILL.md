@@ -9,15 +9,17 @@ description: 为已有视频抠出人物或物体，移除或替换背景，导�
 
 ## 选方法
 
+人物视频抠像默认先用 MatAnyone 2，在许可适用时跑通一段代表性镜头，再处理全片。Apple Vision 的前景实例蒙版优先用于给 MatAnyone 2 做起始蒙版、补漏或重新初始化，也可单独用于显著物体，或在 MatAnyone 2 无法使用时处理人物。
+
 | 方法 | 适用情况 | 怎么用 |
 | --- | --- | --- |
+| MatAnyone 2（人物首选） | 指定人物，需要连续跟踪和细边缘 | 用一张正确的起始蒙版初始化。可从 Apple Vision 或交互分割获得，也可复用已复核的蒙版。模型的默认 CLI 输出前景预览和 Alpha 蒙版，合成时使用原视频颜色与 Alpha。[官方仓库](https://github.com/pq-yang/MatAnyone2) · [非商业使用许可](https://github.com/pq-yang/MatAnyone2/blob/main/LICENSE.txt) |
 | Apple Vision 的 VNGenerateForegroundInstanceMaskRequest | Mac 本地处理；显著人物、物体或需要一起保留的多个前景实例 | 逐帧生成实例蒙版，选择所需实例并输出与输入画面等大的灰度蒙版。可直接合成，也可给 MatAnyone 2 提供起始蒙版。[本地工具和用法](references/apple-vision.md) |
 | Apple Vision 的 VNGeneratePersonSegmentationRequest | 只抠人物，画面中的可见人物可以一起处理 | 生成语义人物蒙版。需要区分几个人或保留帽子、手持物等易掉的结构时，试前景实例蒙版，并检查输出是否保留所需区域。 |
-| MatAnyone 2 | 指定人物，需要连续跟踪和细边缘 | 用一张正确的起始蒙版初始化。可从 Apple Vision 或交互分割获得，也可复用已复核的蒙版。模型的默认 CLI 输出前景预览和 Alpha 蒙版，合成时使用原视频颜色与 Alpha。[官方仓库](https://github.com/pq-yang/MatAnyone2) · [非商业使用许可](https://github.com/pq-yang/MatAnyone2/blob/main/LICENSE.txt) |
 | 剪映 / CapCut | 快速换背景、在同一剪辑工程直接交付 | 尝试自动抠像后把新背景放在下层。均匀绿幕或蓝幕优先用色度抠图，检查衣服同色与溢色。[官方换背景说明](https://www.capcut.com/tools/video-background-changer) |
 | After Effects Object Matte / Roto Brush | 多人交叉、严重遮挡，或需要手动补轮廓和精修边缘 | 选中目标，分段传播，修补漏选和粘连。复杂边缘用 Refine Edge，复核并冻结后导出。[Adobe 官方说明](https://helpx.adobe.com/after-effects/desktop/roto-brush-and-refine-matte/roto-brush/object-matte.html) |
 
-优先复用可运行的本地工具。MatAnyone 2 已安装时核对可执行入口、设备和输出尺寸；Apple Silicon 可测试 PyTorch MPS。比较模型用原片最难的几秒，在计划使用的背景上看结果。已明确要处理整条视频时，试跑只用于选方案，随后继续处理全片。
+优先复用本机已安装的 MatAnyone 2，运行前核对可执行入口、设备和输出尺寸；Apple Silicon 可测试 PyTorch MPS。比较模型用原片最难的几秒，在计划使用的背景上看结果。已明确要处理整条视频时，试跑只用于选方案，随后继续处理全片。
 
 ## 沿时间轴处理
 
