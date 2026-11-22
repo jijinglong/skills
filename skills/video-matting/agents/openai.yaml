@@ -1,0 +1,4 @@
+interface:
+  display_name: "视频抠像与换背景"
+  short_description: "用本地蒙版或跨帧跟踪抠出主体，按需交付透明前景或换背景视频"
+  default_prompt: "使用 $video-matting 抠出这条视频里要保留的主体，检查快速动作和遮挡，交付透明前景和换背景预览。"
