@@ -13,6 +13,7 @@ Jijinglong 自有技能、第三方原样收录与注明来源的维护版本仓
 | [short-drama-breakdown](skills/short-drama-breakdown/SKILL.md)                       | 测量短剧成片的节奏，拆解开场与集尾，并与自家成片对照。          |
 | [short-video-remake](skills/short-video-remake/SKILL.md)                             | 拆解参考短视频，挑选和生成素材，建立剧本与分镜并同步 Spark。    |
 | [singing-voice-conversion](skills/singing-voice-conversion/SKILL.md)                 | 转换现有演唱的音色，对齐原唱，回混伴奏并替换成片音轨。        |
+| [create-procedural-pixel-effects](skills/create-procedural-pixel-effects/SKILL.md)   | 用代码制作像素特效和角色短招式，导出透明图集与帧数据。         |
 | [video-matting](skills/video-matting/SKILL.md)                                       | 抠出视频主体，使用本地蒙版或跨帧跟踪导出透明前景和换背景视频。 |
 
 ## 安装与使用
