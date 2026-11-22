@@ -47,6 +47,8 @@ python3 scripts/project_bvh.py 93_03.bvh motion.json \
 
 ## 逐帧渲染与独立交片
 
+[开收场预览](../assets/line-dancer-transitions.html)随 skill 提供，可以分别播放和拖帧。[Canvas 2D 源码](../assets/line-dancer-transitions.js)注册 `globalThis.LineDancerTransitions`，调用 `drawIntro(ctx, seconds, options)` 和 `drawOutro(ctx, seconds, options)`。默认各 1.875 秒，对应 128 BPM 的四拍。`options` 可调整近脚底锚点 `x`、`y`、`scale` 和 `duration`。清帧、背景与声音由调用方负责。接入正文时，先对齐开场末帧或收场首帧的姿态与承重脚。
+
 Canvas 与 Web Audio 可以共用同一个秒数或拍号，`seconds = beats × 60 / bpm`。以 `frame / fps` 绘制当前帧，使用同一张事件表触发画面和音符。渲染取画布元素的全幅内容。若视口截取出现边条，切换到画布元素截图，抽查实际 MP4 的边缘和关键帧。
 
 把意图切点转换成实际画格。例子中开场为 `[0,56)`，收场为 `[394,450)`，各 56 帧，中间是正文。声音使用相同的帧边界，必要时对片段边缘做数毫秒淡化。若片段不是从关键帧开始，逐帧精确的切法需要重新编码视频。完整片和两个独立片段分别解码验收，核对尺寸、帧率、音轨、首尾姿态及光弧与音乐起音的时间差。

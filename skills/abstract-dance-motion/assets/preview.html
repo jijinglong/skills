@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>舞蹈动作库 · Beat</title>
+<style>
+  :root { color-scheme: dark; font: 16px/1.55 system-ui, sans-serif; color: #eeeae3; background: #141516; }
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  main { width: min(1060px, 100% - 32px); margin: clamp(28px, 6vw, 70px) auto; }
+  h1 { margin: 0 0 12px; font-size: clamp(30px, 5vw, 48px); letter-spacing: -.04em; font-weight: 560; }
+  a { color: #f0d6a9; text-underline-offset: 4px; }
+  p { margin: 0; }
+  .workspace { display: grid; grid-template-columns: minmax(260px, 1fr) minmax(0, 2.25fr); gap: 24px; align-items: start; margin-top: 30px; }
+  .sidebar { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .field { display: grid; gap: 6px; }
+  .muted, label { color: #bbb9b2; font-size: .88rem; }
+  select, button { padding: 8px 10px; font: inherit; color: inherit; border: 1px solid #52504a; border-radius: 6px; background: #222324; }
+  select { min-width: 0; width: 100%; }
+  button { cursor: pointer; }
+  button:disabled { cursor: default; opacity: .55; }
+  button:focus-visible, select:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid #f0d6a9; outline-offset: 3px; }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+  .stage { position: relative; border: 1px solid #3e3e39; border-radius: 10px; background: #1d1e1f; overflow: hidden; }
+  canvas { display: block; width: 100%; height: auto; }
+  .transport { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px; border-top: 1px solid #3e3e39; }
+  input[type=range] { width: 100%; margin: 0; accent-color: #f0d6a9; }
+  output { font-variant-numeric: tabular-nums; }
+  @media (max-width: 740px) { .workspace { grid-template-columns: 1fr; } }
+</style>
+<main>
+  <h1>舞蹈动作库</h1>
+  <a href="../references/dance-library.md">来源、授权和导入说明</a>
+  <div class="workspace">
+    <div class="sidebar">
+      <div class="field">
+        <label for="clip">动作</label>
+        <select id="clip"></select>
+      </div>
+      <div class="field">
+        <p id="note"></p>
+        <p id="details" class="muted"></p>
+      </div>
+      <div class="field">
+        <label for="yaw">视角 <output id="angle" for="yaw"></output></label>
+        <input type="range" id="yaw" min="-90" max="90" value="0" step="1">
+      </div>
+      <div class="field">
+        <label for="speed">播放速度</label>
+        <select id="speed">
+          <option value="1">原速</option>
+          <option value="0.5">半速</option>
+        </select>
+      </div>
+      <div class="actions">
+        <a id="original" download>原始动捕</a>
+        <button type="button" id="export">导出当前视角 JSON</button>
+      </div>
+    </div>
+    <div class="stage">
+      <canvas id="pose" width="1000" height="640" role="img" aria-label="当前舞蹈的关节动画"></canvas>
+      <div class="transport">
+        <button type="button" id="play">播放</button>
+        <input id="seek" type="range" min="0" step="1" value="0" aria-label="舞蹈进度">
+        <output id="time" for="seek" class="muted"></output>
+      </div>
+    </div>
+  </div>
+</main>
+<script>window.danceMotions = [];</script>
+<script src="preview-index.js"></script>
+<script>
+  const controls = Object.fromEntries(
+    ['clip', 'note', 'details', 'yaw', 'angle', 'speed', 'original', 'export', 'pose', 'play', 'seek', 'time']
+      .map(id => [id, document.getElementById(id)]),
+  );
+  const catalog = window.danceCatalog ?? [];
+  const library = new Map(catalog.map(clip => [clip.id, clip]));
+  const loadedScripts = new Map();
+  const ctx = controls.pose.getContext('2d');
+  const chains = [
+    ['Hips', 'Spine1', 'Neck', 'Head'],
+    ...['Left', 'Right'].flatMap(side => [
+      ['Neck', ...['Arm', 'ForeArm', 'Hand'].map(joint => side + joint)],
+      ['Hips', ...['UpLeg', 'Leg', 'Foot', 'ToeBase'].map(joint => side + joint)],
+    ]),
+  ];
+  let current, joints, view, frame = 0, started = null, offset = 0, request = null;
+
+  for (const source of new Set(catalog.map(clip => clip.group))) {
+    const group = document.createElement('optgroup');
+    group.label = source;
+    for (const clip of catalog.filter(clip => clip.group === source)) {
+      group.append(new Option(clip.title, clip.id));
+    }
+    controls.clip.append(group);
+  }
+
+  function project(pose, cosine, sine) {
+    const result = [];
+    for (let i = 0; i < pose.length; i += 3) {
+      result.push(pose[i] * cosine + pose[i + 2] * sine, -pose[i + 1]);
+    }
+    return result;
+  }
+
+  function updateView() {
+    const yaw = Number(controls.yaw.value);
+    const radians = yaw * Math.PI / 180;
+    const cosine = Math.cos(radians), sine = Math.sin(radians);
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = 0;
+    for (const pose of current.frames) {
+      const xy = project(pose, cosine, sine);
+      for (let i = 0; i < xy.length; i += 2) {
+        minX = Math.min(minX, xy[i]);
+        maxX = Math.max(maxX, xy[i]);
+        minY = Math.min(minY, xy[i + 1]);
+        maxY = Math.max(maxY, xy[i + 1]);
+      }
+    }
+    const { width, height } = controls.pose;
+    const scale = Math.min((width - 160) / Math.max(1, maxX - minX), (height - 124) / Math.max(1, maxY - minY));
+    view = { cosine, sine, scale, x: width / 2 - (minX + maxX) * scale / 2, y: height / 2 - (minY + maxY) * scale / 2 };
+    controls.angle.value = yaw + '°';
+    render();
+  }
+
+  function render() {
+    const { width, height } = controls.pose;
+    const { cosine, sine, scale, x, y } = view;
+    const xy = project(current.frames[frame], cosine, sine);
+    const point = name => [x + xy[joints.get(name) * 2] * scale, y + xy[joints.get(name) * 2 + 1] * scale];
+    function stroke(names, color, size) {
+      ctx.beginPath();
+      names.forEach((name, i) => i === 0 ? ctx.moveTo(...point(name)) : ctx.lineTo(...point(name)));
+      ctx.strokeStyle = color;
+      ctx.lineWidth = size;
+      ctx.stroke();
+    }
+    ctx.clearRect(0, 0, width, height);
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.beginPath();
+    ctx.moveTo(64, y);
+    ctx.lineTo(width - 64, y);
+    ctx.strokeStyle = '#42413c';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    chains.forEach((chain, i) => stroke(chain, i > 2 ? '#bdb8ae' : '#efe9de', 5));
+    for (const side of ['Left', 'Right']) {
+      for (const tip of ['Thumb', 'Middle', 'Pinky']) {
+        const name = side + 'Hand' + tip + '3';
+        if (joints.has(name)) stroke([side + 'Hand', name], '#cfc3aa', 2.4);
+      }
+    }
+    ctx.beginPath();
+    ctx.arc(...point('Head'), scale * 4.9, 0, Math.PI * 2);
+    ctx.fillStyle = '#1d1e1f';
+    ctx.fill();
+    ctx.strokeStyle = '#efe9de';
+    ctx.lineWidth = 4;
+    ctx.stroke();
+    controls.seek.value = frame;
+    controls.time.value = (frame / current.fps).toFixed(2) + ' / ' + (current.frames.length / current.fps).toFixed(2) + ' 秒';
+  }
+
+  function stop() {
+    cancelAnimationFrame(request);
+    request = null;
+    started = null;
+    controls.play.textContent = '播放';
+  }
+
+  function tick(now) {
+    started ??= now;
+    frame = Math.min(current.frames.length - 1,
+      offset + Math.floor((now - started) * current.fps * Number(controls.speed.value) / 1000));
+    render();
+    if (frame < current.frames.length - 1) request = requestAnimationFrame(tick);
+    else stop();
+  }
+
+  function loadScript(file) {
+    if (!loadedScripts.has(file)) {
+      loadedScripts.set(file, new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = file;
+        script.onload = resolve;
+        script.onerror = () => {
+          loadedScripts.delete(file);
+          reject(new Error('无法加载 ' + file));
+        };
+        document.head.append(script);
+      }));
+    }
+    return loadedScripts.get(file);
+  }
+
+  function setMotionControls(enabled) {
+    for (const id of ['yaw', 'speed', 'export', 'play', 'seek']) controls[id].disabled = !enabled;
+  }
+
+  async function loadClip(id) {
+    const entry = library.get(id);
+    if (!entry) return;
+    stop();
+    controls.clip.value = id;
+    controls.original.href = entry.file;
+    controls.note.textContent = '正在读取关节轨迹…';
+    controls.details.textContent = '';
+    controls.time.value = '';
+    setMotionControls(false);
+    ctx.clearRect(0, 0, controls.pose.width, controls.pose.height);
+    try {
+      await loadScript(entry.script);
+      if (controls.clip.value !== id) return;
+      current = window.danceMotions.find(clip => clip.id === id);
+      if (!current) throw new Error('缺少动作轨迹');
+    } catch {
+      if (controls.clip.value === id) controls.note.textContent = '没有读到预览轨迹，可下载原始动捕。';
+      return;
+    }
+    joints = new Map(current.joint_names.map((name, index) => [name, index]));
+    frame = Math.min(current.frames.length - 1, Math.round(current.preview_start * current.fps));
+    controls.seek.max = current.frames.length - 1;
+    controls.note.textContent = current.note;
+    controls.details.textContent = current.source + ' · ' + current.file.split('/').pop() + ' · 源 ' + current.source_fps + ' fps';
+    controls.yaw.value = current.yaw;
+    setMotionControls(true);
+    updateView();
+  }
+
+  controls.clip.addEventListener('change', () => loadClip(controls.clip.value));
+  controls.yaw.addEventListener('input', updateView);
+  controls.speed.addEventListener('change', () => { started = null; offset = frame; });
+  controls.seek.addEventListener('input', () => {
+    frame = Number(controls.seek.value);
+    started = null;
+    offset = frame;
+    render();
+  });
+  controls.play.addEventListener('click', () => {
+    if (request !== null) { stop(); return; }
+    if (frame === current.frames.length - 1) frame = 0;
+    offset = frame;
+    controls.play.textContent = '暂停';
+    request = requestAnimationFrame(tick);
+  });
+  controls.export.addEventListener('click', () => {
+    const file = {
+      source: current.file,
+      source_fps: current.source_fps,
+      source_start_frame: current.source_start_frame,
+      source_frame_count: current.source_frame_count,
+      fps: current.fps,
+      yaw: Number(controls.yaw.value),
+      joint_names: current.joint_names,
+      frames: current.frames.map(pose => project(pose, view.cosine, view.sine).map(n => Math.round(n * 100) / 100)),
+    };
+    const url = URL.createObjectURL(new Blob([JSON.stringify(file)], { type: 'application/json' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = current.id + '-joints.json';
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+
+  if (library.size) {
+    const requested = new URLSearchParams(location.search).get('clip');
+    loadClip(library.has(requested) ? requested : library.keys().next().value);
+  } else {
+    controls.note.textContent = '没有读到动作数据。请保留本页旁的 cmu 和 rokoko 目录。';
+    for (const id of ['clip', 'yaw', 'speed', 'export', 'play', 'seek']) controls[id].disabled = true;
+  }
+</script>
+</html>

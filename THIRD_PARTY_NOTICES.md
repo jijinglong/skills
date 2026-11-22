@@ -14,3 +14,7 @@
 - 用户于2026-11-17要求重新命名并优化内容，维护版基于上述第三方资料整理，不声明原始材料为Jijinglong原创，也不自行追加许可。
 - 重新组织主流程、摄影、提示词、审核与示例，修正无条件的模型效果保证及导演禁令，区分摄影镜头与生成任务、真实素材与计划素材、制作说明与可复制正文。仍以Seedance 2.0为主要适用方向。
 - 当前10个文件不再承诺与原包逐字节一致；原包SHA-256、原始提交与本地备份用于追溯。具体变化及资料日期见[来源与迭代记录](skills/video-storyboarding/references/provenance.md)。
+
+## abstract-dance-motion 的动捕素材
+
+技能内含 7 条原始 BVH，扩展包包含 116 条同源 BVH 和 2 条 ACCAD C3D。CMU 动捕、BVH 转换版与 ACCAD 数据沿用各自的来源和条款。预览的关节轨迹由这些动作计算。 [素材来源与署名](skills/abstract-dance-motion/references/dance-library.md)

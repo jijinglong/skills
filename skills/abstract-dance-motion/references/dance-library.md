@@ -1,6 +1,16 @@
-# 舞蹈动作库 · CMU Graphics Lab
+# 舞蹈动作库
 
-**默认从 CMU Graphics Lab Motion Capture Database 按舞种找一段完整动作。** 这是一套可下载的真人骨骼动捕。先看官方条目的动作描述、采样率和 Animated 预览，再按同一个试次编号拿 BVH。原库提供 ASF/AMC 等格式，BVH 是 Bruce Hahne 转换后的分发版本。 [官方目录](https://mocap.cs.cmu.edu/subjects.php) · [官方格式说明](https://mocap.cs.cmu.edu/resources.php) · [固定版本的 BVH 目录](https://github.com/una-dinosauria/cmu-mocap/tree/09a07f54f3bbb58797325f009282d0b2048a2871/data)
+## 随 skill 提供的资源
+
+用桌面浏览器打开[离线预览](../assets/preview.html)。从「动作」选择试次，点「播放」，可调视角、半速看关节和导出当前视角的 30 fps 关节 JSON。圆头和白色线条是预览样式，运动来自原始动捕。
+
+随 skill 提供 7 条 BVH 原件，保存在 `assets/cmu/`。包括 Charleston 的 `93_03`、`93_04`、`93_08`，现代舞 `05_02`，Salsa `60_02`，Breaking `85_04`，以及印度舞 `94_01`。预览页也能直接下载当前试次的原件。
+
+[下载完整动作包 ZIP](https://github.com/jijinglong/skills/releases/download/abstract-dance-motion-library-v1/abstract-dance-motion-library-v1.zip)（约 80 MB），解压后打开包内 `preview.html`。里面有 **116 条 CMU BVH**、同一套离线选舞与关节导出工具，以及 **2 条 ACCAD C3D** 光学标记轨迹。C3D 需要解算到目标骨架，适用 CC BY 3.0，使用时署名 **Open Motion Project by ACCAD / The Ohio State University**。 [ACCAD 原始素材](https://accad.osu.edu/research/motion-lab/mocap-system-and-data) · [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)
+
+## 从 CMU 找更多舞句
+
+核对官方条目的动作描述、采样率与 Animated 预览，再按同一个试次编号取 BVH。原库提供 ASF/AMC 等格式。 [官方目录](https://mocap.cs.cmu.edu/subjects.php) · [官方格式说明](https://mocap.cs.cmu.edu/resources.php) · [固定版本的 BVH 目录](https://github.com/una-dinosauria/cmu-mocap/tree/09a07f54f3bbb58797325f009282d0b2048a2871/data)
 
 | 想找的舞步 | 查阅和下载入口 |
 | --- | --- |
@@ -22,6 +32,11 @@
 
 ## 使用条款
 
-CMU 允许将数据用于作品及商业产品，使用时保留出处。条款禁止直接转售动作数据。头、肩、髋、膝和踝适合驱动线条人，手掌可据前臂另画。CMU 说明手部和脚趾关节可能有噪声，手指和拇指是便于编辑的占位关节。 [CMU 使用条款及数据说明](https://mocap.cs.cmu.edu/) · [CMU FAQ](https://mocap.cs.cmu.edu/faqs.php)
+CMU 允许复制、修改和免费分发数据，也允许用于商业成片。使用时保留出处。原件及其转换后的动作数据禁止直接转售。头、肩、髋、膝和踝适合驱动线条人，手掌可据前臂另画。CMU 说明手部和脚趾关节可能有噪声，手指和拇指是便于编辑的占位关节。 [CMU 使用条款及数据说明](https://mocap.cs.cmu.edu/) · [CMU FAQ](https://mocap.cs.cmu.edu/faqs.php)
 
 > The data used in this project was obtained from mocap.cs.cmu.edu. The database was created with funding from NSF EIA-0196217.
+
+## 其他来源
+
+- Rokoko 的六条舞蹈提供带手指的 Mixamo 骨架 FBX，允许用于个人和商业项目。原始包从 Rokoko 获取。该包的实际关键帧间隔为 24 fps，导入时可核对文件时间基准。 [Rokoko 官方下载](https://www.rokoko.com/resources/rokoko-mocap-6-free-dance-animations)
+- NUS 的舞蹈目录包含恰恰、太空步、中国舞和宝莱坞舞，仅限研究用途，禁止商用及转售。Motorica 有 Hip-hop、Popping、Locking 和复古爵士，非研究或商业用途需另外授权。 [NUS 动捕库](https://mocap.cs.sfu.ca/nusmocap.html) · [Motorica 官方条款](https://github.com/simonalexanderson/MotoricaDanceDataset)

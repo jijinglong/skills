@@ -5,7 +5,7 @@ description: Use when finding a dance motion library or creating an abstract dan
 
 # 抽象舞蹈动效
 
-从[舞蹈动作库](references/dance-library.md)按舞种选一段完整的真人动捕，默认用 CMU Graphics Lab。先看动作能否独立读出舞句，再用光标出少数段落重音。根据请求交付动作素材、编舞方案、样片或成片。
+先打开随 skill 提供的[离线动作预览](assets/preview.html)，按舞种试读真人动捕。需要更多舞句时，从[舞蹈动作库](references/dance-library.md)下载完整动作包或找到上游素材。先看动作能否独立读出舞句，再用光标出少数段落重音。
 
 ## 编舞与形象
 
@@ -20,4 +20,4 @@ description: Use when finding a dance motion library or creating an abstract dan
 - 逐帧渲染时让时间戳决定整帧。成片在剪辑交界按画格拆出片头和片尾，保留实际衔接状态。检查三个文件的首尾帧、画幅、帧率、含声状态和播放结果。复核输出本身的全幅构图，防止浏览器截取留下边条或裁掉画布。
 - 记录使用的动作来源、片段、拍点、复用方式和输出版本。用户限定只找素材或设计时，停在对应阶段。
 
-动作选定后，按需读 [编舞、投影和渲染](references/motion-and-rendering.md)。
+需要制作成片时，按需读[编舞、投影和渲染](references/motion-and-rendering.md)，或在[开收场预览](assets/line-dancer-transitions.html)查看可独立调用的入场、出场。
