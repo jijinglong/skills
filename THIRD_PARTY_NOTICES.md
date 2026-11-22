@@ -18,3 +18,7 @@
 ## abstract-dance-motion 的动捕素材
 
 技能内含 7 条原始 BVH，扩展包包含 116 条同源 BVH 和 2 条 ACCAD C3D。CMU 动捕、BVH 转换版与 ACCAD 数据沿用各自的来源和条款。预览的关节轨迹由这些动作计算。 [素材来源与署名](skills/abstract-dance-motion/references/dance-library.md)
+
+## line-figure-combat-motion 的动作素材
+
+技能内含四条 KinemIQ 导出的原始 GLB 和二维投影轨迹。Quaternius 的三条动作沿用 CC0 1.0，ACCAD 后撤动作沿用 CC BY 3.0。 [动作来源、署名与校验值](skills/line-figure-combat-motion/references/animation-library.md)

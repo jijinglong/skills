@@ -17,6 +17,7 @@ Jijinglong 自有技能、第三方原样收录与注明来源的维护版本仓
 | [create-procedural-pixel-effects](skills/create-procedural-pixel-effects/SKILL.md)   | 用代码制作像素特效和角色短招式，导出透明图集与帧数据。         |
 | [abstract-dance-motion](skills/abstract-dance-motion/SKILL.md)                       | 含离线舞步预览、7 条 BVH 和线条小人开收场。[完整动作包](https://github.com/jijinglong/skills/releases/tag/abstract-dance-motion-library-v1)可单独下载。 |
 | [video-matting](skills/video-matting/SKILL.md)                                       | 抠出视频主体，使用本地蒙版或跨帧跟踪导出透明前景和换背景视频。 |
+| [line-figure-combat-motion](skills/line-figure-combat-motion/SKILL.md)                 | 投影骨骼动作并编排线条小人格斗，附三连斩、格挡、受击和闪避的原始 GLB 及二维轨迹。 |
 
 ## 安装与使用
 
