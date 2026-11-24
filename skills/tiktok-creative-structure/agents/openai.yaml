@@ -1,0 +1,4 @@
+interface:
+  display_name: "TikTok 短视频创意结构"
+  short_description: "把开场钩子、中段信息变化和结尾兑现写进竖屏短视频分镜"
+  default_prompt: "使用 $tiktok-creative-structure 设计或审查这条短片的开场、推进、结尾、声音与镜头节奏。"
